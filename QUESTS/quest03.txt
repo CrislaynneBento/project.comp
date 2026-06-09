@@ -1,0 +1,12 @@
+%%-- QUESTÃO 3 --
+
+\quest segundo o ditado popular quem tem boca vai à?
+
+
+
+
+\item{1,c} itália
+\item{2,e} roma
+\item{3,e} goma
+\item{4,e} eua
+\item{5,e} Bauná

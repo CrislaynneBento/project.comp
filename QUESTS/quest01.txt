@@ -1,0 +1,12 @@
+%%-- QUESTÃO 1 --
+
+\quest Quem descobriu o Brasil?
+
+
+
+
+\item{1,c} tirulipa
+\item{2,e} zeze de camargo
+\item{3,e} pablo
+\item{4,e} timão
+\item{5,e} jesus

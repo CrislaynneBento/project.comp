@@ -1,0 +1,12 @@
+%%-- QUESTÃO 2 --
+
+\quest Qual a cor do céu?
+
+
+
+
+\item{1,c} azul
+\item{2,e} verde, claro
+\item{3,e} vermelho
+\item{4,e} branco
+\item{5,e} preto
