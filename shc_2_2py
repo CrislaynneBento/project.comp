@@ -1,0 +1,83 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+import sys
+import os
+import pickle
+import random
+import subprocess
+
+#Configuração de pasta base
+QUESTS_DIR = "quests"
+
+def get_project_paths(class_name):
+
+    """
+    Retorna os caminhos dos arquivos isolados por pasta de turma.
+    
+    """
+
+base_dir = os.path.join(".", class_name)
+if not os.path.exists(base_dir):
+    os.makedirs(base_dir)
+
+return
+{
+    'DIR': base_dir,
+    'PROJECT': os.path.join(base_dir, "project.comp"),
+    'PROVAS': os.path.join(base_dir, "provas.tex"),
+    'REPORT': os.path.join(base_dir, "report.txt"),
+    'REPORT_TEX': os.path.join(base_dir, "report_notas.tex"),
+    'STUDENTS': os.path.join(base_dir, "students.txt")
+}
+
+def load_project(path):
+    if os.path.exists(path):
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    return {}
+
+
+def save_project(path, data):
+    with open(path, 'wb') as f:
+        pickle.dump(data, f)
+
+
+def parse_question_file(filename):
+    """
+
+    Lê a questão da pasta quests e aceita qualquer número de alternativas,
+    após isso, 
+    ele retorna o enunciado e uma lista de tuplas: (id_item, status, texto)
+
+    """
+
+
+    path = os.path.join(QUESTS_DIR, filename)
+    if not os.path.exists(path):
+        return None
+    
+    enunciado = ""
+    alternativas = []
+
+    with open(path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+    for line in lines:
+        line_str = line.strip()
+        if line_str.startswith("%%") or not line_str:
+            continue
+        if line_str.startswith("\\quest"):
+            enunciado = line_str.replace("\\quest", "").strip()
+        elif line_str.startswith("\\item"):
+
+            #Exemplo: \item{1,c} azul -> extrai o miolo interno {1,c}
+            start_bracket = line_str.find("{")
+            end_bracket = line_str.find("}")
+            meta = line_str[start_bracket + 1: end_bracket].split(',')
+            item_id = meta[0].strip()
+            status = meta[1].strip()
+            texto = line_str[end_bracket+1:].strip()
+            alternativas.append((item_id, status, texto))
+
+    return{"enunciado": enunciado, "alternativas": alternativas}
