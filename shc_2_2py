@@ -81,3 +81,32 @@ def parse_question_file(filename):
             alternativas.append((item_id, status, texto))
 
     return{"enunciado": enunciado, "alternativas": alternativas}
+
+
+def get_correct_answers():
+
+    """Lê dinamicamente a pasta de questões para saber o gabarito real atualizado."""
+
+    gabarito_real = {}
+
+    # Busca quest01.txt, quest02.txt dinamicamente na pasta quests
+
+    if not os.path.exists(QUESTS_DIR):
+        return gabarito_real
+    
+    for file in os.listdir(QUESTS_DIR):
+
+        if file.startswith("quest") and file.endswith(".txt"):
+
+            q_num = file.replace("quest", "").replace(".txt", "")
+            q_data = parse_question_file(file)
+
+            if q_data:
+                for item_id, status, _ in q_data["alternativas"]:
+                    if status == 'c':
+                        gabarito_real[q_num] = item_id
+                        
+    return gabarito_real
+
+
+
