@@ -18,19 +18,18 @@ def get_project_paths(class_name):
     if not os.path.exists(base_dir):
         os.makedirs(base_dir)
 
-    return
-    {
+    return {
         'DIR': base_dir,
         'PROJECT': os.path.join(base_dir, "project.comp"), #fica dentro da pasta
         'PROVAS': os.path.join(base_dir, "provas.tex"), #fica dentro --
         'REPORT': os.path.join(base_dir, "report.txt"), #same
         'REPORT_TEX': os.path.join(base_dir, "report_notas.tex"),
-        'STUDENTS': os.path.join(base_dir, "students.txt")
-    }   
+        'STUDENTS': os.path.join(base_dir, "students.txt")}   
 
 
 
-def load_project(path): #abre um arquivo, lê os bytes bin. e reconstrói o dic. como estava antes
+#abre um arquivo, lê os bytes bin. e reconstrói o dic. como estava antes
+def load_project(path): 
     if os.path.exists(path):
         with open(path, 'rb') as f:
             return pickle.load(f)
@@ -38,13 +37,15 @@ def load_project(path): #abre um arquivo, lê os bytes bin. e reconstrói o dic.
 
 
 
-def save_project(path, data): #recebe o dic. do proj. e guarda num arquivo físico
+#recebe o dic. do proj. e guarda num arquivo físico
+def save_project(path, data): 
     with open(path, 'wb') as f:
         pickle.dump(data, f) 
 
 
 
-def parse_question_file(filename):
+#leitor inteligente de questões, abre os arquivos de texto das perguntas e traduz o formato de texto
+def parse_question_file(filename): 
     """
 
     Lê a questão da pasta quests e aceita qualquer número de alternativas,
@@ -85,6 +86,7 @@ def parse_question_file(filename):
 
 
 
+#função para as notas calculadas do relatório, diz o que está escrito nos arquivos de questões naquele momento
 def get_correct_answers():
 
     """Lê dinamicamente a pasta de questões para saber o gabarito real atualizado."""
@@ -115,27 +117,26 @@ def get_correct_answers():
 #Execução do código 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        printf("Uso correto: python3 shc_2_1.py <NOME_DA_TURMA> --<comando> [argumentos]")
+        print("Uso correto: python3 shc_2_1.py <NOME_DA_TURMA> --<comando> [argumentos]")
         print("Exemplos:")
         print("  python shc_2_1.py turma_a --submit 01 abc")
-
         sys.exit(1)
 
-        turma = sys.argv[1] #Captura o primeiro argumento do terminal (o nome da turma)
-        cmd = sys.argv[2] # Gera o mapeamento isolado para essa turma
+    turma = sys.argv[1] #Captura o primeiro argumento do terminal (o nome da turma)
+    cmd = sys.argv[2] # Gera o mapeamento isolado para essa turma
 
-        paths = get_project_paths(turma)
+    paths = get_project_paths(turma)
 
-        if cmd == "--create":
-            cmd_create(paths)
-        elif cmd == "--exams":
-            cmd_exams(paths)
-        elif cmd == "--submit":
-            if len(sys.argv) < 5:
-                printf("Erro: forneça o serial e as respostas. Ex: python3 shc_2_2.py turma_a --submit 01 abc")
-            else:
-                cmd_submit(paths, sys.argv[3], sys.argv[4])
-        elif cmd == "--report":
+    if cmd == "--create":
+        cmd_create(paths)
+    elif cmd == "--exams":
+        cmd_exams(paths)
+    elif cmd == "--submit":
+        if len(sys.argv) < 5:
+            printf("Erro: forneça o serial e as respostas. Ex: python3 shc_2_2.py turma_a --submit 01 abc")
+        else:
+            cmd_submit(paths, sys.argv[3], sys.argv[4])
+    elif cmd == "--report":
             cmd_report(paths)
         else:
             printf("[-] Comando desconhecido.")
