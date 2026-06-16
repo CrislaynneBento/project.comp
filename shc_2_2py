@@ -139,4 +139,4 @@ if __name__ == "__main__":
     elif cmd == "--report":
             cmd_report(paths)
         else:
-            printf("[-] Comando desconhecido.")
+            print("[-] Comando desconhecido.")
